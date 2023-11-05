@@ -139,6 +139,119 @@ public class HeapSort {
 
 
 
+### 1.3、桶排序
+
+不基于比较的排序算法，分为两类：计数排序和基数排序。
+
+#### 1.3.1、计数排序
+
+##### 算法思想
+
+- 给定数组，范围[0，intMax]
+- 定义一个辅助数组，辅助数组的长度就是给定数组的长度
+- 遍历数组，给定数组的值与辅助数组的索引对应，
+- 每当有一个给定数组的值等于辅助数组的索引，那么这个索引上的值加一
+- 遍历完成之后，再遍历辅助数组，
+- 每当辅助数组的值不为0，就把辅助数组的索引覆盖在给定数组中
+- 每覆盖一次，辅助数组的值减一，直到减为0才能遍历下一次
+
+##### 时间复杂度
+
+```java
+O (N)
+```
+
+##### 代码实现
+
+```java
+public class CountSort {
+    public static void countSort(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            max = Math.max(max, arr[i]);
+        }
+        int[] bucket = new int[max + 1];
+        for (int a : arr) {
+            bucket[a]++;
+        }
+        int index = 0;
+        for (int i = 0; i < bucket.length; i++) {
+            while (bucket[i]-- > 0) {
+                arr[index++] = i;
+            }
+        }
+    }
+	// 写比较器验证
+    public static void comparator(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        Arrays.sort(arr);
+    }
+
+    public static int[] generateRandomArr(int arrLen) {
+        int[] ans = new int[arrLen];
+        for (int i = 0; i < arrLen; i++) {
+            int num = (int) (Math.random() * 1000 + 1);
+            ans[i] = num;
+        }
+        return ans;
+    }
+    
+    public static void main(String[] args) {
+        int arrLength = 1000;
+        int testTimes = 1000000;
+        for (int i = 0; i < testTimes; i++) {
+            int arrLen = (int) (Math.random() * arrLength + 1);
+            int[] arr1 = generateRandomArr(arrLen);
+            int[] arr2 = new int[arr1.length];
+            for (int j = 0; j < arr1.length; j++) {
+                arr2[j] = arr1[j];
+            }
+            countSort(arr1);
+            comparator(arr2);
+            for (int j = 0; j < arr1.length; j++) {
+                if (arr1[j] != arr2[j]) {
+                    System.out.println("Oops!");
+                }
+            }
+        }
+        System.out.println("Finish!");
+    }
+}
+```
+
+
+
+#### 1.3.2、基数排序
+
+##### 算法思想
+
+
+
+
+
+##### 时间复杂度
+
+
+
+
+
+##### 代码实现
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -875,13 +988,25 @@ public class TrieTreeSearch {
 
 
 
-
-
-
-
 # Attention：
 
-## 1、比较器原理
+## 1、特别的计算
+
+1. 求一个数num的第d位数：
+
+   ```java
+   (num / (int) Math.pow(10, d - 1)) % 10; 
+   ```
+
+   
+
+
+
+
+
+
+
+## 2、比较器原理
 
 ```java
 public int compare(Student o1, Student o2) {
@@ -908,3 +1033,27 @@ public int compare(Student o1, Student o2) {
 - 如果是负数，说明第一个参数的值小，此时就是返回小的那个值，就是从小到大正序排列
 - 如果是正数，说明第一个参数的值大，此时就是返回大的那个值，就是从大到小逆序排列
 - 但是如果是第二个参数减第一个参数，那么排序结果就是反的
+
+
+
+
+
+## 3、对数器
+
+对数器用来验证自己写的算法是否严丝合缝的正确。
+
+1. 一个是自己实现的算法（要考虑时间复杂度或者空间复杂度）
+2. 用来比较的是Java已有的或者暴力写出来的算法（不用在乎空间复杂度和时间复杂度，但是一定是正确的）
+3. 两个算法进行大量的随机的同步的比较
+4. 比较完之后全部相同输出`finish`，只要有一处不一样就输出一个`Oops`。
+
+
+
+步骤：
+
+1. 先定义一个比较次数，比如100万次（大量的比较下才能确定算法是严丝合缝的正确）
+2. 定义一个概率，比如概率小于0.25进行插入，小于0.5进行删除操作，小于0.75进行查询操作，剩下的概率进行其他操作
+3. 确保每次遍历时，概率和要进行操作的数据都是随机的
+4. 每进行一次比较就要判断一下，不一样打印
+5. 100万次遍历完，打印完成
+
