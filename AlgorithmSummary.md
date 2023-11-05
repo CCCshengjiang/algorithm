@@ -553,27 +553,109 @@ public class test {
 4. 沿途所有的经过的节点的pass值加1，每个字符串结束时来到的节点的end值加1
 
 ```java
-// Node1和Tree1结合使用，Node2和Tree2结合使用。
-// Tree1只能加入小写字符组成的字符串，有局限性
-// Tree2可以都加入
-public class TrieTree {
-    public static class Node1 {
+// Node和TrieTree结合使用，Node2和TrieTree2结合使用。
+// TrieTree2只能加入小写字符组成的字符串，有局限性
+// TrieTree可以都加入
+public class TrieTreeSearch {
+    public static class Node {
         public int pass;
         public int end;
-        public Node1[] next;
-        public Node1() {
+        public HashMap<Integer, Node> next;
+
+        public Node() {
             pass = 0;
             end = 0;
-            next = new Node1[26];
+            next = new HashMap<>();
         }
     }
 
-    public static class Tree1 {
-        private final Node1 root;
+    public static class TrieTree {
+        private final Node root;
+
+        public TrieTree() {
+            root = new Node();
+        }
+
+        public void insert(String word) {
+            if (word == null) {
+                return;
+            }
+            Node node = root;
+            node.pass++;
+            char[] chars = word.toCharArray();
+            int index = 0;
+            for (char aChar : chars) {
+                index = aChar;
+                if (!node.next.containsKey(index)) {
+                    node.next.put(index, new Node());
+                }
+                node = node.next.get(index);
+                node.pass++;
+            }
+            node.end++;
+        }
+
+        public void delete(String word) {
+            if (search(word) != 0) {
+                Node node = root;
+                node.pass--;
+                int index = 0;
+                char[] chars = word.toCharArray();
+                for (char aChar : chars) {
+                    index = aChar;
+                    if (node.next.containsKey(index)) {
+                        node = node.next.get(index);
+                    }
+                    node.pass--;
+                }
+                node.end--;
+            }
+        }
+
+        public int search(String word) {
+            return research(word).end;
+        }
+
+        public int prefixNum(String word) {
+            return research(word).pass;
+        }
+
+        private Node research(String word) {
+            if (word == null) {
+                return new Node();
+            }
+            Node node = root;
+            char[] chars = word.toCharArray();
+            int index = 0;
+            for (char aChar : chars) {
+                index = aChar;
+                if (!node.next.containsKey(index)) {
+                    return new Node();
+                }
+                node = node.next.get(index);
+            }
+            return node;
+        }
+    }
+
+    public static class Node2 {
+        public int pass;
+        public int end;
+        public Node2[] next;
+
+        public Node2() {
+            pass = 0;
+            end = 0;
+            next = new Node2[26];
+        }
+    }
+
+    public static class TrieTree2 {
+        private final Node2 root;
 
         // 无参构造
-        public Tree1() {
-            root = new Node1();
+        public TrieTree2() {
+            root = new Node2();
         }
 
         // 添加字符串
@@ -582,13 +664,13 @@ public class TrieTree {
                 return;
             }
             char[] chars = word.toCharArray();
-            Node1 node = root;
+            Node2 node = root;
             node.pass++;
             int index = 0;
             for (char aChar : chars) {
                 index = aChar - 'a';
                 if (node.next[index] == null) {
-                    node.next[index] = new Node1();
+                    node.next[index] = new Node2();
                 }
                 node = node.next[index];
                 node.pass++;
@@ -597,16 +679,16 @@ public class TrieTree {
         }
 
         // 查找字符串有多少个
-        public int searchWord(String word) {
+        public int search(String word) {
             if (word == null) {
-               return 0;
+                return 0;
             }
             char[] chars = word.toCharArray();
-            Node1 node = root;
+            Node2 node = root;
             int index = 0;
             for (char aChar : chars) {
                 index = aChar - 'a';
-                if(node.next[index] == null) {
+                if (node.next[index] == null) {
                     return 0;
                 }
                 node = node.next[index];
@@ -615,16 +697,15 @@ public class TrieTree {
         }
 
         // 删除字符串
-        public void deleteWord(String word) {
-            System.out.println(searchWord(word));
-            if (searchWord(word) != 0) {
-                Node1 node = root;
+        public void delete(String word) {
+            if (search(word) != 0) {
+                Node2 node = root;
                 node.pass--;
                 int index = 0;
                 char[] chars = word.toCharArray();
                 for (char aChar : chars) {
                     index = aChar - 'a';
-                    if(--node.next[index].pass == 0) {
+                    if (--node.next[index].pass == 0) {
                         node.next[index] = null;
                         return;
                     }
@@ -636,11 +717,11 @@ public class TrieTree {
 
         // 有几个字符串前缀是word
         public int prefixNum(String word) {
-            if(word == null) {
+            if (word == null) {
                 return 0;
             }
             char[] chars = word.toCharArray();
-            Node1 node = root;
+            Node2 node = root;
             int index = 0;
             for (char aChar : chars) {
                 index = aChar - 'a';
@@ -651,126 +732,63 @@ public class TrieTree {
             }
             return node.pass;
         }
-    }
-
-    public static class Node2 {
-        public int pass;
-        public int end;
-        public HashMap<Integer, Node2> next;
-
-        public Node2() {
-            pass = 0;
-            end = 0;
-            next = new HashMap<>();
-        }
-    }
-
-    public static class Tree2 {
-        private final Node2 root;
-
-        public Tree2() {
-            root = new Node2();
-        }
-
-        public void insert(String word) {
-            if (word == null) {
-                return;
-            }
-            Node2 node = root;
-            node.pass++;
-            char[] chars = word.toCharArray();
-            int index = 0;
-            for (char aChar : chars) {
-                index = aChar;
-                if (!node.next.containsKey(index)) {
-                    node.next.put(index, new Node2());
-                }
-                node = node.next.get(index);
-                node.pass++;
-            }
-            node.end++;
-        }
-
-        public int search(String word) {
-            if (word == null) {
-                return 0;
-            }
-            Node2 node = root;
-            char[] chars = word.toCharArray();
-            int index = 0;
-            for (char aChar: chars) {
-                index = aChar;
-                if (!node.next.containsKey(index)) {
-                    return 0;
-                }
-                node = node.next.get(index);
-            }
-            return node.end;
-        }
-
-        public void delete(String word) {
-            if (search(word) != 0) {
-                Node2 node = root;
-                root.pass--;
-                char[] chars = word.toCharArray();
-                int index = 0;
-                for (char aChar : chars) {
-                    index = aChar;
-                    if (node.next.containsKey(index)) {
-                        node.pass--;
-                    }
-                    node = node.next.get(index);
-                }
-                node.end--;
-            }
-        }
-
-        public int prefixNum(String word) {
-            if (word == null) {
-                return 0;
-            }
-            Node2 node = root;
-            char[] chars = word.toCharArray();
-            int index = 0;
-            for (char aChar : chars) {
-                index = aChar;
-                if (!node.next.containsKey(index)) {
-                    return 0;
-                }
-                node = node.next.get(index);
-            }
-            return node.pass;
-        }
 
     }
 
-    // 测试
+    public static String generateRandomString(int strLen) {
+        char[] ans = new char[(int) (Math.random() * strLen) + 1];
+        for (int i = 0; i < ans.length; i++) {
+            int value = (int) (Math.random() * 26);
+            ans[i] = (char) (value + 97);
+        }
+        return String.valueOf(ans);
+    }
+
+    public static String[] generateRandomString(int arrLen, int strLen) {
+        String[] ans = new String[(int) (Math.random() * arrLen) + 1];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = generateRandomString(strLen);
+        }
+        return ans;
+    }
+
+
+    // 写对数器进行测试
     public static void main(String[] args) {
-        Tree1 tree1 = new Tree1();
-        tree1.insert("ab");
-        tree1.insert("abcd");
-
-        Tree2 tree2 = new Tree2();
-        tree2.insert("ab");
-        tree2.insert("abcde");
-
-        System.out.println(tree2.search("a"));
-        System.out.println(tree2.search("ab"));
-        System.out.println(tree2.search("abcde"));
-        System.out.println("===============================");
-        tree2.delete("a");
-        tree2.delete("ab");
-        System.out.println(tree2.search("a"));
-        System.out.println(tree2.search("ab"));
-        System.out.println(tree2.search("abcde"));
-        System.out.println("========================");
-        tree2.insert("ab");
-        tree2.insert("abcd");
-        tree2.insert("a");
-        System.out.println(tree2.search("ab"));
-        System.out.println(tree2.prefixNum("ab"));
+        int strLen = 20;
+        int arrLen = 100;
+        int testTimes = 1000000;
+        for (int i = 0; i < testTimes; i++) {
+            String[] strings = generateRandomString(arrLen, strLen);
+            TrieTree my = new TrieTree();
+            TrieTree2 test = new TrieTree2();
+            for (String word : strings) {
+                double decide = Math.random();
+                if (decide < 0.25) {
+                    my.insert(word);
+                    test.insert(word);
+                } else if (decide < 0.5) {
+                    my.delete(word);
+                    test.delete(word);
+                } else if (decide < 0.75) {
+                    int ans1 = my.search(word);
+                    int ans2 = test.search(word);
+                    if(ans1 != ans2) {
+                        System.out.println("Oops!");
+                    }
+                }else {
+                    int ans1 = my.prefixNum(word);
+                    int ans2 = test.prefixNum(word);
+                    if (ans1 != ans2) {
+                        System.out.println("Oops!");
+                    }
+                }
+            }
+        }
+        System.out.println("Finish!");
     }
 }
+
 ```
 
 
