@@ -1,23 +1,25 @@
 # 算法总结
 
-## 1、排序算法
+## 1 排序算法
 
-### 1.1、快速排序
+![image-20231107133459995](D:\AAA技术没有高低之分\picture\image-20231107133459995.png)
 
-#### 1.1.1、算法思想
+### 1.1 快速排序
+
+#### 1.1.1 算法思想
 
 - 先取一个随机数，然后和数组的最后一个数交换
 
 - 进行`partition`过程，也就是比数组最后一个数小的放在数组左边，大的放在右边，相等的在数组中间，最后把数组的最后一个数也要放到中间位置，然后返回相等的那一批数的最左索引和最右索引。
 - 递归前两个过程
 
-#### 1.1.2、时间复杂度
+#### 1.1.2 时间复杂度
 
 ```java
 O (N * logN)
 ```
 
-#### 1.1.3、代码实现
+#### 1.1.3 代码实现
 
 ```java
 public class QuickSort {
@@ -71,22 +73,22 @@ public class QuickSort {
 }
 ```
 
-### 1.2、堆排序
+### 1.2 堆排序
 
-#### 1.2.1、算法思想
+#### 1.2.1 算法思想
 
 - 给了一个数组，把数组看成完全二叉树结构，现在开始变成堆
 - 从完全二叉树的最后一个值开始进行`heapify`过程，也就是把每一个值都要和子节点比较大小，把这个节点为顶的树变成堆结构
 - 变成大根堆堆结构之后，将堆顶元素和数组最后一个元素互换，堆的长度减一的同时要进行`heapify`操作，把剩下元素的要恢复堆结构
 - 重复第三步操作，每次都取一个最大值出来放到原堆的最后，数组有序
 
-#### 1.2.2、时间复杂度
+#### 1.2.2 时间复杂度
 
 ```java
 O (N * logN)
 ```
 
-#### 1.2.3、代码实现
+#### 1.2.3 代码实现
 
 ```java
 public class HeapSort {
@@ -139,16 +141,18 @@ public class HeapSort {
 
 
 
-### 1.3、桶排序
+### 1.3 桶排序
 
 **不基于比较**的排序算法，，分为两类，但是都有约束条件
 
 - 计数排序：要排序的数都要是0或正整数
 - 基数排序：必须是十进制的数，而且是0或正整数
 
-给的数越多，代价越大。一旦要升级的话，要付出的代价更加显而易见
+给的数越多，代价越大。一旦要升级的话，要付出的代价更加显而易见。
 
-#### 1.3.1、计数排序
+要排序的最大的数越大，计数排序需要的空间就越多，要排序比如{9，1，96656412}，那么此时就需要辅助数组的长度就要是96656413了，很明显性价比不高，就需要用基数排序，基数排序只用两个辅助数组，而且一个计数器数组长度长度固定为10，一个辅助数组长度和要排序的数组长度相同，浪费的空间小。但是如果要排序的数中最大数越小，那么此时就可以用计数排序。
+
+#### 1.3.1 计数排序
 
 ##### 算法思想
 
@@ -231,7 +235,7 @@ public class CountSort {
 
 
 
-#### 1.3.2、基数排序
+#### 1.3.2 基数排序
 
 ##### 算法思想
 
@@ -373,6 +377,31 @@ public class RadixSort {
 
 
 
+### 排序算法总结
+
+#### 1 总结
+
+1. 不基于比较的排序（桶排序），对样本数据有严格的要求，不易改写
+2. 基于比较的排序，只要规定好两个样本怎么比大小就可以直接复用
+3. 基于比较的排序，时间复杂度的极限是`O(N*logN)`
+4. 时间复杂度`O(N*logN)`，额外空间复杂度低于`O(N)`且稳定的基于比较的排序是**不存在**的
+5. **为了绝对的速度选择快排，为了省空间选堆排，为了稳定性选归并**
+
+
+
+#### 2 常见的坑
+
+1. 归并排序的额外空间复杂度可以变成`O(1)`，“归并排序内部缓存法”，但是将变得不稳定。（还不如用堆排）
+2. “原地归并排序”不好，会让时间复杂度变成`O(N*2)`。（不如用插入排序）
+3. 快速排序稳定性改进，论文：“01 stable sort”，但是会对样本数据要求更多。（不如用桶排序）
+   - 题目：在整型数组中，请把奇数放在数组左边，偶数放在数组右边，要求所有基数之间原始的相对次序不变，所有偶数之间原始相对次序不变，要求时间复杂度`O(N)`,额外空间复杂度`O(1)`。
+
+
+
+#### 3 排序优化
+
+1. 稳定性的考虑：数据是值传递直接快排，引用传递用归并排序
+2. 充分利用`O(N*logN)`和`O(N^2)`排序各自的优势：小样本量直接插入排序
 
 
 
@@ -386,22 +415,11 @@ public class RadixSort {
 
 
 
+## 2 算法结构
 
+### 2.1 堆
 
-
-
-
-
-
-
-
-
-
-## 2、算法结构
-
-### 2.1、堆
-
-#### 2.1.1、堆结构
+#### 2.1.1 堆结构
 
 1. 堆是用数组实现的完全二叉树结构
 2. 完全二叉树中如果每棵树的最大值都在顶部就是大根堆，最小值在顶部就是小根堆
@@ -561,7 +579,7 @@ public class Heap {
 }
 ```
 
-#### 2.1.2、改进的堆结构
+#### 2.1.2 改进的堆结构
 
 为什么要改进？
 
@@ -783,11 +801,11 @@ public class test {
 
 
 
-### 2.2、前缀树
+### 2.2 前缀树
 
 可以完成前缀相关的查询
 
-#### 2.2.1、前缀树的结构
+#### 2.2.1 前缀树的结构
 
 1. 单个字符串中的字符从前到后加到一颗多叉树上
 2. 字符放在路上，节点上有专属的数据项（常见的是pass和end）
@@ -1035,6 +1053,288 @@ public class TrieTreeSearch {
 
 
 
+## 3 链表
+
+### 3.1 回文链表
+
+#### 3.1.1 判断方法
+
+1. 第一种（笔试）：
+   - 链表从中间分开，把后半部分的节点放到栈中
+   - 从链表的头结点开始，依次和弹出的节点比较
+2. 第二种（面试）：
+   - 反转链表的后半部分，中间节点的下一节点指向空
+   - 两个指针分别从链表的头和尾出发比较
+   - 直到左边节点到空或两个节点都到空停止
+   - 判断结果出来后，要把链表后半部分反转回去。
+
+#### 3.1.2 代码实现
+
+```java
+ublic class IsPalindromList {
+    public static class Node {
+        public int val;
+        public Node next;
+        public Node(int data) {
+            val = data;
+            next = null;
+        }
+    }
+
+    public static boolean isPalindrom1(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        Stack<Node> stack = new Stack<>();
+        Node mid = head;
+        Node fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            mid = mid.next;
+            fast = fast.next.next;
+        }
+        while (mid.next != null) {
+            mid = mid.next;
+            stack.add(mid);
+        }
+        Node i = head;
+        boolean ans = true;
+        while (stack.size() != 0) {
+            if (i.val != stack.pop().val) {
+                ans = false;
+                break;
+            }
+            i = i.next;
+        }
+        return ans;
+    }
+    public static boolean isPalindrom2(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        // 找到中间节点
+        Node mid = head;
+        Node fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            mid = mid.next;
+            fast = fast.next.next;
+        }
+        Node cur = mid;
+        // 后边段链表反转
+        Node pre = null;
+        Node next = null;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        Node left = head;
+        Node right = pre;
+        boolean ans = true;
+        while (left != null && right != null) {
+            if (left.val != right.val) {
+                ans = false;
+                break;
+            }
+            left = left.next;
+            right = right.next;
+        }
+
+        cur = pre;
+        pre = null;
+        next = null;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return ans;
+    }
+
+
+    public static void main(String[] args) {
+        Node head = new Node(0);
+        head.next = new Node(1);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(2);
+        head.next.next.next.next = new Node(1);
+        head.next.next.next.next.next = new Node(0);
+
+        System.out.println(isPalindrom2(head));
+        System.out.println(isPalindrom1(head));
+    }
+
+}
+```
+
+
+
+### 3.2 荷兰国旗
+
+链表的荷兰国旗问题，给定一个链表头节点，一个划分值
+
+- 把链表中小于划分值的放在左边
+- 等于划分值的放在中间
+- 大于划分值的放在右边。
+
+#### 3.2.1 解决方法
+
+（其实我第一次写的时候第二种方法比第一种方法写的快，因为思路简单，不绕。）
+
+1. 第一种（笔试）：
+   - 把链表的所有节点放在一个节点数组中
+   - 对这个数组做`partition`过程
+   - 之后把数组每个节点连起来
+2. 第二种（面试）：
+   - 定义有六个节点，分别代表：大于、等于和小于区域的头和尾
+   - 链表开始遍历，比划分值小的连在小于区域下方，同时断开节点和之前链表的关系，指向空
+   - 等于和大于同理
+   - 遍历完链表之后，开始把小于区域的尾巴和等于区域的头连接，等于区域的尾巴和大于区域的头连接
+
+#### 3.2.2 代码实现
+
+```java
+public class SmallEqualBig {
+    public static class Node {
+        public int val;
+        public Node next;
+        public Node(int val) {
+            this.val = val;
+            next = null;
+        }
+    }
+
+    public static Node listPartition1(Node head, int pivot) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        int index = 1;
+        Node cur = head;
+        while (cur.next != null) {
+            index++;
+            cur = cur.next;
+        }
+        Node[] arr = new Node[index];
+        cur = head;
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = cur;
+            cur = cur.next;
+        }
+        partition(arr,pivot);
+        for (index = 1; index != arr.length; index++) {
+            arr[index - 1].next = arr[index];
+        }
+        arr[index - 1].next = null;
+        return arr[0];
+    }
+
+    public static Node listPartition2(Node head, int pivot) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node smallHead = null;
+        Node smallTail = null;
+        Node equalHead = null;
+        Node equalTail = null;
+        Node bigHead = null;
+        Node bigTail = null;
+        Node next = null;
+        while (head != null) {
+            next = head.next;
+            head.next = null;
+            if (head.val < pivot) {
+                if (smallHead == null) {
+                    smallHead = head;
+                    smallTail = head;
+                }else {
+                    smallTail.next = head;
+                    smallTail = smallTail.next;
+                }
+            } else if (head.val == pivot) {
+                if (equalHead == null) {
+                    equalHead = head;
+                    equalTail = head;
+                }else {
+                    equalTail.next = head;
+                    equalTail = equalTail.next;
+                }
+            }else {
+                if (bigHead == null) {
+                    bigHead = head;
+                    bigTail = head;
+                }else {
+                    bigTail.next = head;
+                    bigTail = bigTail.next;
+                }
+            }
+            head = next;
+        }
+        if (smallTail != null) {
+            smallTail.next = equalHead;
+            equalTail = equalTail == null ? smallTail : equalTail;
+        }
+        if (equalTail != null) {
+            equalTail.next = bigHead;
+        }
+        return smallHead == null ? (equalHead == null ? bigHead : equalHead) : smallHead;
+    }
+
+    private static void partition(Node[] arr, int pivot) {
+        int small = -1;
+        int big = arr.length;
+        int index = 0;
+        while (index < big) {
+            if(arr[index].val < pivot) {
+                swap(arr, index++, ++small);
+            } else if (arr[index].val > pivot) {
+                swap(arr, index++, --big);
+            }else {
+                index++;
+            }
+        }
+    }
+
+    private static void swap(Node[] arr, int i, int j) {
+        Node temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(9);
+        head.next = new Node(1);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(6);
+        head.next.next.next.next = new Node(4);
+        head.next.next.next.next.next = new Node(5);
+        head.next.next.next.next.next.next = new Node(2);
+
+        Node node = listPartition1(head, 2);
+
+        while (node != null) {
+            System.out.print(node.val + " ");
+            node = node.next;
+        }
+        System.out.println();
+
+        Node head2 = new Node(9);
+        head2.next = new Node(1);
+        head2.next.next = new Node(2);
+        head2.next.next.next = new Node(6);
+        head2.next.next.next.next = new Node(4);
+        head2.next.next.next.next.next = new Node(5);
+        head2.next.next.next.next.next.next = new Node(2);
+
+        Node node1 = listPartition2(head2, 2);
+        while (node1 != null) {
+            System.out.print(node1.val + " ");
+            node1 = node1.next;
+        }
+
+    }
+}
+```
 
 
 
@@ -1058,6 +1358,32 @@ public class TrieTreeSearch {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 算法的稳定性
+
+稳定性是指同样大小的样本在排序之后不会改变相对次序。
+
+- 对基础类型来说，稳定性毫无意义
+- 对非基础类型来说，稳定性有重要意义
+
+有些排序算法可以实现成稳定的，而有些排序算法无论如何都实现不了稳定性。
+
+![image-20231107133832725](D:\AAA技术没有高低之分\picture\image-20231107133832725.png)
 
 
 
