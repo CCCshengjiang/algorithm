@@ -1610,7 +1610,7 @@ public class FindFirstIntersectNode {
 
 ## 4 二叉树
 
-### 4.1 树的遍历
+### 4.1 树的序遍历
 
 前序遍历、中序遍历、后序遍历
 
@@ -1763,11 +1763,81 @@ public class RecursiveTraversalBT {
 }
 ```
 
+## 4.2 树的层遍历
 
+### 4.2.1 遍历方式
 
+**树的最宽层有几个节点？**
 
+1. 借助Map来查找
+   1. 定义一个队列和一个HashMap，都把头节点放进去，其中Map中存放的是当前节点和其对应的层数
+   2. 每次弹出一个节点，就把这个节点的左右子节点都放进队列和对应的Map
+   3. 如果还没到下一层，那么当前层的节点数就要加一
+   4. 如果到了下一层，就把上一层的节点数和之前层的节点数比较
+   5. 返回节点数最多的层的节点数
+2. 只用队列
+   1. 待补充
 
+```java
+public class TreeMaxWidth {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node(int val) {
+            this.val = val;
+        }
+    }
 
+    public static int maxWidthUseMap(Node head) {
+        if (head == null) {
+            return 0;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(head);
+        HashMap<Node,Integer> nodeLevelMap = new HashMap<>();
+        nodeLevelMap.put(head, 1);
+        int curLevel = 1;
+        int curLevelNodes = 0;
+        int max = 0;
+        while (!queue.isEmpty()) {
+            Node curNode = queue.poll();
+            int curNodeLevel = nodeLevelMap.get(curNode);
+            if (curNode.left != null) {
+                queue.add(curNode.left);
+                nodeLevelMap.put(curNode.left, curNodeLevel + 1);
+            }
+            if (curNode.right != null) {
+                queue.add(curNode.right);
+                nodeLevelMap.put(curNode.right, curNodeLevel + 1);
+            }
+            if (curNodeLevel == curLevel) {
+                curLevelNodes++;
+            }else {
+                max = Math.max(max, curLevelNodes);
+                curLevel++;
+                curLevelNodes = 1;
+            }
+        }
+        max = Math.max(max, curLevelNodes);
+        return max;
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(1);
+        head.left = new Node(2);
+        head.right = new Node(3);
+        head.left.left = new Node(4);
+        head.left.right = new Node(5);
+        head.right.left = new Node(6);
+        head.right.right = new Node(7);
+        head.left.right.left = new Node(8);
+        head.right.left.right = new Node(9);
+
+        System.out.println(maxWidthUseMap(head));
+    }
+}
+```
 
 
 
