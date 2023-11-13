@@ -1,0 +1,12 @@
+
+e
+java:S1104"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ
+k
+java:S1104"PMake next a static final constant or non-public and provide accessors if needed.(±±èÃøÿÿÿÿ
+f
+java:S1104"PMake rand a static final constant or non-public and provide accessors if needed.(ßÐöî
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(µ’Ö øÿÿÿÿ
+E	java:S106X"+Replace this use of System.out by a logger.(¥êéÔûÿÿÿÿ
+E	java:S106Y"+Replace this use of System.out by a logger.(©¯È›ýÿÿÿÿ
+E
+java:S1128"*Remove this unused import 'java.util.Map'.(¼è½Òþÿÿÿÿ

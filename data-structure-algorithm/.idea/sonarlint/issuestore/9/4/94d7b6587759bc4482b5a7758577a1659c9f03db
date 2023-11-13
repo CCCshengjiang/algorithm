@@ -1,0 +1,10 @@
+
+l
+java:S1104	"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ8Ì€’º¼1
+m
+java:S1104
+"PMake left a static final constant or non-public and provide accessors if needed.(ó÷ÔÄ8Í€’º¼1
+n
+java:S1104"QMake right a static final constant or non-public and provide accessors if needed.(Ö¢è¥8Í€’º¼1
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(»ÍÒûÿÿÿÿ8Î€’º¼1
+G	java:S106^"+Replace this use of System.out by a logger.(¥â‹Ÿ8Óª”º¼1
