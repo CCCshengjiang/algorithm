@@ -7,3 +7,5 @@ W
 'src/com/wen/二叉树/TreeMaxWidth.java,9\4\94d7b6587759bc4482b5a7758577a1659c9f03db
 ^
 .src/com/wen/链表/FindFirstIntersectNode.java,4\d\4d1a440cfcc3ec55f59d6a1cab758af36ecc9230
+f
+6src/com/wen/二叉树/SerializeAndReconstructTree.java,8\5\85bd8680fd24cc37b260df3f552ab624243fdf47

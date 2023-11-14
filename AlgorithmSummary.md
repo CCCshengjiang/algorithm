@@ -1763,9 +1763,9 @@ public class RecursiveTraversalBT {
 }
 ```
 
-## 4.2 树的层遍历
+### 4.2 树的层遍历
 
-### 4.2.1 遍历方式
+#### 4.2.1 遍历方式
 
 **树的最宽层有几个节点？**
 
@@ -1779,6 +1779,8 @@ public class RecursiveTraversalBT {
    1. 定义一个当前层的最左节点，一个下一层的最左节点
    2. 当弹出的节点等于当前层最左节点时，记录当前层节点数并与之前层的最大节点数比较，哪个大留哪个
    3. 这个时候就要进入下一次，所以当前层节点数置为0，当前层最左节点置为下一层最左节点
+
+#### 4.2.2 代码实现
 
 ```java
 public class TreeMaxWidth {
@@ -1874,6 +1876,157 @@ public class TreeMaxWidth {
 ```
 
 
+
+## 4.3 序列化与反序列化
+
+二叉树的序列化与反序列化
+
+### 4.3.1 实现思路
+
+1. 方式一：前序遍历
+   1. 通过前序遍历方式实现二叉树的序列化
+   2. 将结果存入队列中
+   3. 要注意空节点也要存null
+2. 方式二：层序遍历
+   1. 层序遍历也是用队列实现
+   2. 注意从左到右，遇到空节点存null
+
+### 4.3.2 代码实现
+
+```java
+/**
+ * 二叉树的序列化与反序列化
+ *
+ * @author wen
+ */
+public class SerializeAndReconstructTree {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    /**
+     * 二叉树的序列化（前序遍历实现）
+     *
+     * @param head 头节点
+     * @return 返回一个队列
+     */
+    public static Queue<String> preSerial(Node head) {
+        Queue<String> queue = new LinkedList<>();
+        pres(queue, head);
+        return queue;
+    }
+
+    private static void pres(Queue<String> queue, Node head) {
+        if (head == null) {
+            queue.add(null);
+        } else {
+            queue.add(String.valueOf(head.val));
+            pres(queue, head.left);
+            pres(queue, head.right);
+        }
+    }
+
+    /**
+     * 二叉树的反序列化（前序遍历实现）
+     *
+     * @param preQueue 存着二叉树序列化的队列
+     * @return 返回，反序列化的二叉树头节点
+     */
+    public static Node buildByPreQueue(Queue<String> preQueue) {
+        if (preQueue == null || preQueue.isEmpty()) {
+            return null;
+        }
+        return preBuild(preQueue);
+    }
+
+    private static Node preBuild(Queue<String> preQueue) {
+        String val = preQueue.poll();
+        if (val == null) {
+            return null;
+        }
+        Node head = new Node(Integer.parseInt(val));
+        head.left = preBuild(preQueue);
+        head.right = preBuild(preQueue);
+        return head;
+    }
+
+    /**
+     * 二叉树序列化（层序遍历实现）
+     *
+     * @param head 二叉树头节点
+     * @return 返回序列化后的队列
+     */
+    public static Queue<String> levelSerial(Node head) {
+        Queue<String> ans = new LinkedList<>();
+        if (head == null) {
+            ans.add(null);
+        } else {
+            ans.add(String.valueOf(head.val));
+            Queue<Node> help = new LinkedList<>();
+            help.add(head);
+            while (!help.isEmpty()) {
+                Node cur = help.poll();
+                if (cur.left != null) {
+                    ans.add(String.valueOf(cur.left.val));
+                    help.add(cur.left);
+                } else {
+                    ans.add(null);
+                }
+                if (cur.right != null) {
+                    ans.add(String.valueOf(cur.right.val));
+                    help.add(cur.right);
+                } else {
+                    ans.add(null);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 反序列化（层序遍历实现）
+     *
+     * @param levelQueue 序列化存入的队列
+     * @return 返回，反序列化的二叉树头节点
+     */
+    public static Node buildByLevelQueue(Queue<String> levelQueue) {
+        if (levelQueue == null || levelQueue.isEmpty()) {
+            return null;
+        }
+        Node head = generateNode(levelQueue.poll());
+        Queue<Node> queue = new LinkedList<>();
+        if (head != null) {
+            queue.add(head);
+        }
+        Node node = null;
+        while (!queue.isEmpty()) {
+            node = queue.poll();
+            node.left = generateNode(levelQueue.poll());
+            node.right = generateNode(levelQueue.poll());
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        return head;
+    }
+
+    private static Node generateNode(String val) {
+        if (val == null) {
+            return null;
+        }
+        return new Node(Integer.parseInt(val));
+    }
+}
+```
 
 
 
