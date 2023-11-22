@@ -1877,11 +1877,11 @@ public class TreeMaxWidth {
 
 
 
-## 4.3 序列化与反序列化
+### 4.3 序列化与反序列化
 
 二叉树的序列化与反序列化
 
-### 4.3.1 实现思路
+#### 4.3.1 实现思路
 
 1. 方式一：前序遍历
    1. 通过前序遍历方式实现二叉树的序列化
@@ -1891,7 +1891,7 @@ public class TreeMaxWidth {
    1. 层序遍历也是用队列实现
    2. 注意从左到右，遇到空节点存null
 
-### 4.3.2 代码实现
+#### 4.3.2 代码实现
 
 ```java
 /**
@@ -2027,6 +2027,51 @@ public class SerializeAndReconstructTree {
     }
 }
 ```
+
+
+
+### 4.4 折纸问题
+
+#### 4.4.1 解决思路
+
+>请把一段纸条竖着放在桌子上，然后从纸条的下边向上方对折1次，压出折痕后展开。此时折痕是凹下去的，即折痕突起的方向指向纸条的背面。 如果从纸条的下边向上方连续对折2次，压出折痕后展开，此时有三条折痕，从上到下依次是下折痕、下折痕和上折痕。
+>
+>给定一个输入参数N，代表纸条都从下边向上方连续对折N次。 请从上到下打印所有折痕的方向。
+>
+>例如:N=1时，打印: down N=2时，打印: down down up
+
+二叉树问题，递归遍历
+
+
+
+#### 4.4.2 实现代码
+
+```java
+public class PaperFold {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        printAllFolds(N);
+    }
+
+    private static void printAllFolds(int n) {
+        printProcess(1, n, true);
+    }
+
+    private static void printProcess(int i, int n, boolean flag) {
+        if (i > n) {
+            return;
+        }
+        printProcess(i + 1, n, true);
+        System.out.print(flag ? "down " : "up ");
+        printProcess(i + 1, n, false);
+    }
+}
+```
+
+
+
+
 
 
 
