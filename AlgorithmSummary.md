@@ -2,7 +2,7 @@
 
 ## 1 排序算法
 
-![image-20231107133459995](D:\AAA技术没有高低之分\picture\image-20231107133459995.png)
+![image-20231107133459995](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231702863.png)
 
 ### 1.1 快速排序
 
@@ -1360,7 +1360,7 @@ public class SmallEqualBig {
 
    - 把复制数组拿出来的时候注意复制数组连起来还要把原数组连起来
 
-     ![image-20231109141535414](D:\AAA技术没有高低之分\picture\image-20231109141535414.png)
+     ![image-20231109141535414](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231703350.png)
 
 #### 3.3.2 代码实现
 
@@ -2071,15 +2071,350 @@ public class PaperFold {
 
 
 
+### 4.5 后继节点
+
+#### 4.5.1 解题思路
+
+> 二叉树节点结构定义如下：
+>
+>    public static class Node {
+>          public int cal;
+>         public Node left;
+>          public Node right;
+>          public Node parent;
+>      }
+>  给你二叉树中的某个节点，返回该节点的后继节点
+
+后继节点就是二叉树中序遍历，这个节点的下一个节点
+
+**思路**
+
+1. 如果该节点有右子树，那么后继节点就是右树的最左节点
+2. 如果该节点没有右子树
+   1. 如果该节点是父节点的左节点，此时父节点就是后继节点
+   2. 如果该节点是父节点的右节点，向上寻找
+      1. 这个节点在顶部节点的右树上，此时返回的是空
+      2. 如果这个节点在某个节点的左数上，返回此时的节点
 
 
 
+4.5.2 代码实现
+
+```java
+public class SuccessorNode {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node parent;
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    public static Node getSuccessorNode(Node node) {
+        if (node == null) {
+            return node;
+        }
+        if (node.right != null) {
+            return getLeftMost(node.right);
+        }else{
+            Node cur = node;
+            Node parent = node.parent;
+            while (parent != null && parent.left != node) {
+                cur = parent;
+                parent = cur.parent;
+            }
+            return parent;
+        }
+    }
+
+    private static Node getLeftMost(Node node) {
+        Node cur = node;
+        if (cur.left != null) {
+            cur = cur.left;
+        }
+        return cur;
+    }
+    
+    // 测试
+    public static void main(String[] args) {
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
+        Node n6 = new Node(6);
+        Node n7 = new Node(7);
+
+        n1.left = n2;
+        n1.right = n3;
+        n2.left = n4;
+        n2.right = n5;
+        n2.parent = n1;
+        n3.left = n6;
+        n3.right = n7;
+        n3.parent = n1;
+        n4.parent = n2;
+        n5.parent = n2;
+        n6.parent = n3;
+        n7.parent = n3;
+
+        System.out.println(getSuccessorNode(n6).val);
+    }
+}
+```
 
 
 
+### 4.6 递归套路
+
+1. 假设以X节点为头，假设可以向X左树和X右树要任何信息
+2. 在上一步的假设下，讨论以X为头节点的树，得到答案的可能性（最重要）
+3. 列出所有可能性后，确定到底需要向左树和右树要什么样的信息
+4. 把左树信息和右树信息求全集，就是任何一颗子树都需要返回的信息S
+5. 递归函数都返回S，每一颗子树都这么要求
+6. 写代码，在代码中考虑如何把左树的信息和右树的信息整合出整棵树的信息
+
+#### 4.6.1 是否平衡二叉树
+
+**题目**
+
+> 给定一颗二叉树的头节点head，返回这颗二叉树是不是平衡二叉树
+
+平衡二叉树就是这个树的所有子树和它自己，左右子树高度差不超过1
+
+1. 递归
+2. 先判断左子树是否平衡
+3. 再判断右子树是否平衡
+4. 再整体判断
+
+**代码**
+
+```java
+public class IsBalancedTree {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    public static class Info {
+        public int height;
+        public boolean balancedFlag;
+
+        public Info(int height, boolean balancedFlag) {
+            this.height = height;
+            this.balancedFlag = balancedFlag;
+        }
+    }
+
+    public static boolean isBalanced(Node head) {
+        return balancedProcess(head).balancedFlag;
+    }
+
+    private static Info balancedProcess(Node head) {
+        if (head == null) {
+            return new Info(0, true);
+        }
+        Info leftInfo = balancedProcess(head.left);
+        Info rightInfo = balancedProcess(head.right);
+        int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+        boolean flag = leftInfo.balancedFlag && rightInfo.balancedFlag && Math.abs(leftInfo.height - rightInfo.height) <= 1;
+        return new Info(height, flag);
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        Node head = new Node(1);
+        head.left = new Node(2);
+        head.right = new Node(3);
+        head.left.left = new Node(4);
+        head.left.right = new Node(5);
+        head.right.left = new Node(6);
+        head.right.right = new Node(7);
+        head.right.right.right = new Node(8);
+        head.right.right.right.right = new Node(9);
+
+        System.out.println(isBalanced(head));
+    }
+}
+```
 
 
 
+#### 4.6.2 最大距离
+
+**题目**
+
+> 给定一棵二叉树的头节点head，任何两个节点之间都存在距离，返回二叉树的最大距离
+
+**代码**
+
+```java
+public class MaxDistance {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    public static class Info {
+        public int maxDistance;
+        public int height;
+        public Info(int maxDistance, int height) {
+            this.maxDistance = maxDistance;
+            this.height = height;
+        }
+    }
+
+    public static int getMaxDistance(Node head) {
+        return distanceProcess(head).maxDistance;
+    }
+
+    private static Info distanceProcess(Node head) {
+        if (head == null) {
+            return new Info(0, 0);
+        }
+        Info leftInfo = distanceProcess(head.left);
+        Info rightInfo = distanceProcess(head.right);
+        int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+        int maxDistance = Math.max(Math.max(leftInfo.maxDistance, rightInfo.maxDistance), leftInfo.height + rightInfo.height + 1);
+        return new Info(maxDistance, height);
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(1);
+        head.left = new Node(2);
+        head.right = new Node(3);
+        head.left.left = new Node(4);
+        head.left.right = new Node(5);
+        head.right.left = new Node(6);
+        head.right.right = new Node(7);
+
+        System.out.println(getMaxDistance(head));
+    }
+}
+```
+
+
+
+#### 4.6.3 最大二叉搜索树
+
+**题目**
+
+> 给定一颗二叉树的头节点head，返回这颗二叉树中最大的二叉搜索子树的节点数量
+
+搜索二叉树：整棵树上没有重复值，左树的值都比节点小，右树的值都比节点大
+
+**举例**
+
+下图中最大的二叉搜索树头节点：7，节点数量：2
+
+<img src="https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231751773.png"  />
+
+**分析**
+
+1. 和头节点有关：整棵树都是二叉搜索树
+2. 和头节点无关：最大二叉搜索子树在左树上或者右树上
+3. 需要的信息
+   1. 每棵树是否是二叉搜索树
+   2. 最大搜索二叉树的节点数量
+   3. 每棵树的最大节点值
+   4. 每棵树的最小节点值
+
+
+
+**代码**
+
+```java
+public class MaxSubBSTNode {
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    public static class Info {
+        public boolean isAllBST;
+        public int maxBSTSize;
+        public int max;
+        public int min;
+
+        public Info(boolean isAllBST, int maxBSTSize, int max, int min) {
+            this.isAllBST = isAllBST;
+            this.maxBSTSize = maxBSTSize;
+            this.max = max;
+            this.min = min;
+        }
+    }
+
+    public static int getMaxSubBSTNode(Node head) {
+        if (head == null) {
+            return 0;
+        }
+        return BSTNodeProcess(head).maxBSTSize;
+    }
+
+    private static Info BSTNodeProcess(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Info leftInfo = BSTNodeProcess(head.left);
+        Info rightInfo = BSTNodeProcess(head.right);
+        int min = head.val;
+        int max = head.val;
+        int maxBSTSize = 0;
+        if (leftInfo != null) {
+            min = Math.min(leftInfo.min, min);
+            max = Math.max(leftInfo.max, max);
+            maxBSTSize = Math.max(maxBSTSize, leftInfo.maxBSTSize);
+        }
+        if (rightInfo != null) {
+            min = Math.min(rightInfo.min, min);
+            max = Math.max(rightInfo.max, max);
+            maxBSTSize = Math.max(maxBSTSize, rightInfo.maxBSTSize);
+        }
+        boolean leftIsBST = leftInfo == null || leftInfo.isAllBST;
+        boolean rightIsBST = rightInfo == null || rightInfo.isAllBST;
+        boolean leftIsBigger = leftInfo == null || leftInfo.max < head.val;
+        boolean rightIsBigger = rightInfo == null || rightInfo.min > head.val;
+        boolean isAllBST = false;
+        if (leftIsBST && rightIsBST && leftIsBigger && rightIsBigger) {
+            maxBSTSize = (leftInfo == null ? 0 : leftInfo.maxBSTSize)
+                    +
+                    (rightInfo == null ? 0 : rightInfo.maxBSTSize)
+                    +
+                    1;
+            isAllBST = true;
+        }
+        return new Info(isAllBST, maxBSTSize, max, min);
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(4);
+        head.left = new Node(2);
+        head.right = new Node(6);
+        head.left.left = new Node(1);
+        head.left.right = new Node(3);
+        head.right.left = new Node(5);
+        head.right.right = new Node(3);
+
+        System.out.println(getMaxSubBSTNode(head));
+    }
+}
+```
 
 
 
@@ -2114,7 +2449,7 @@ public class PaperFold {
 
 有些排序算法可以实现成稳定的，而有些排序算法无论如何都实现不了稳定性。
 
-![image-20231107133832725](D:\AAA技术没有高低之分\picture\image-20231107133832725.png)
+![image-20231107133832725](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231703463.png)
 
 
 
@@ -2176,7 +2511,7 @@ public class PaperFold {
 
 # Attention：
 
-## 1、特别的计算
+## 1 特别的计算
 
 1. 求一个数num的第d位数：
 
@@ -2192,7 +2527,7 @@ public class PaperFold {
 
 
 
-## 2、比较器原理
+## 2 比较器原理
 
 ```java
 public int compare(Student o1, Student o2) {
@@ -2224,7 +2559,7 @@ public int compare(Student o1, Student o2) {
 
 
 
-## 3、对数器
+## 3 对数器
 
 对数器用来验证自己写的算法是否严丝合缝的正确。
 
@@ -2245,5 +2580,16 @@ public int compare(Student o1, Student o2) {
 
 
 
-最近想参加一个算法比赛，后面可能会在算法方面投入更多时间吧
+## 4 树的定义
+
+1. 平衡二叉树：这个树的所有子树和它自己的左右子树高度差不超过1
+2. 搜索二叉树：整棵树上没有重复值，左树的值都比节点小，右树的值都比节点大
+
+
+
+
+
+
+
+
 

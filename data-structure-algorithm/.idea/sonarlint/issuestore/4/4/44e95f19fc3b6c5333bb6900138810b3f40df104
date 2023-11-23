@@ -1,0 +1,17 @@
+
+l
+java:S1104"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ8é½ß¿1
+m
+java:S1104"PMake left a static final constant or non-public and provide accessors if needed.(ó÷ÔÄ8é½ß¿1
+n
+java:S1104"QMake right a static final constant or non-public and provide accessors if needed.(Ö¢è¥8é½ß¿1
+p
+java:S1104"TMake isAllBST a static final constant or non-public and provide accessors if needed.(ÄİQ8é½ß¿1
+x
+java:S1104"VMake maxBSTSize a static final constant or non-public and provide accessors if needed.(› ñîüÿÿÿÿ8é½ß¿1
+l
+java:S1104"OMake max a static final constant or non-public and provide accessors if needed.(¢€ê×8é½ß¿1
+q
+java:S1104"OMake min a static final constant or non-public and provide accessors if needed.(Ü—ùßÿÿÿÿÿ8é½ß¿1
+o	java:S100)"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(È†¶ûÿÿÿÿ8½ß¿1
+L	java:S106U"+Replace this use of System.out by a logger.(×¹¼úÿÿÿÿ8ÿÙ¾ß¿1

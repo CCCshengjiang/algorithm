@@ -1,0 +1,13 @@
+
+l
+java:S1104"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ8§Ò¦Ü¿1
+m
+java:S1104"PMake left a static final constant or non-public and provide accessors if needed.(ó÷ÔÄ8§Ò¦Ü¿1
+n
+java:S1104"QMake right a static final constant or non-public and provide accessors if needed.(Ö¢è¥8§Ò¦Ü¿1
+y
+java:S1104"WMake maxDistance a static final constant or non-public and provide accessors if needed.(ËËŞ‚ÿÿÿÿÿ8§Ò¦Ü¿1
+o
+java:S1104"RMake height a static final constant or non-public and provide accessors if needed.(ñ½8§Ò¦Ü¿1
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(»ÍÒûÿÿÿÿ8¨Ò¦Ü¿1
+L	java:S1064"+Replace this use of System.out by a logger.(«ëŸáûÿÿÿÿ8±§Ü¿1
