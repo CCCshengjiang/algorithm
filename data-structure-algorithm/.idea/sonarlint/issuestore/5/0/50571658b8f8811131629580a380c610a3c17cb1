@@ -1,14 +1,0 @@
-
-l
-java:S1104
-"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ8¤İ¨Ö¿1
-m
-java:S1104"PMake left a static final constant or non-public and provide accessors if needed.(ó÷ÔÄ8¤İ¨Ö¿1
-n
-java:S1104"QMake right a static final constant or non-public and provide accessors if needed.(Ö¢è¥8¤İ¨Ö¿1
-o
-java:S1104"RMake height a static final constant or non-public and provide accessors if needed.(ñ½8¤İ¨Ö¿1
-z
-java:S1104"XMake balancedFlag a static final constant or non-public and provide accessors if needed.(×® ãÿÿÿÿÿ8¤İ¨Ö¿1
-{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(»ÍÒûÿÿÿÿ8¥İ¨Ö¿1
-L	java:S1068"+Replace this use of System.out by a logger.(ıÀ»îüÿÿÿÿ8•ï¯Ö¿1

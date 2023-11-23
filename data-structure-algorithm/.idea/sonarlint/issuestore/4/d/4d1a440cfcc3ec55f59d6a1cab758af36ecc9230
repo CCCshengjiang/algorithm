@@ -1,11 +1,0 @@
-
-e
-java:S1104"OMake val a static final constant or non-public and provide accessors if needed.(ΤΈϊΟ
-k
-java:S1104"PMake next a static final constant or non-public and provide accessors if needed.(±±θΓψÿÿÿÿ
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(µ’Φ ψÿÿÿÿ
-g
-java:S2259"KA "NullPointerException" could be thrown; "intersectNode" is nullable here.(τυρύÿÿÿÿ
-h
-java:S3776""RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Β¬λ•
-F	java:S106"+Replace this use of System.out by a logger.(τυρύÿÿÿÿ

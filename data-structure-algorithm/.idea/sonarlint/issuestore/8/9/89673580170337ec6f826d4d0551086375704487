@@ -1,27 +1,0 @@
-
-e
-java:S1104"OMake val a static final constant or non-public and provide accessors if needed.(Ô¸úÏ
-f
-java:S1104"PMake left a static final constant or non-public and provide accessors if needed.(ó÷ÔÄ
-g
-java:S1104"QMake right a static final constant or non-public and provide accessors if needed.(Ö¢è¥
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(»ÍÒûÿÿÿÿ
-f
-java:S11493"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ã¦Ò
-f
-java:S1149D"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ã¦Ò
-k
-java:S1149T"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ıÎ¯‚ûÿÿÿÿ
-f
-java:S1149U"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(óöÛè
-f
-java:S1149j"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ã¦Ò
-@	java:S106"+Replace this use of System.out by a logger.(ÃªˆÖ
-@	java:S106#"+Replace this use of System.out by a logger.(ÃªˆÖ
-@	java:S106-"+Replace this use of System.out by a logger.(ÃªˆÖ
-@	java:S1067"+Replace this use of System.out by a logger.(ÃªˆÖ
-@	java:S106K"+Replace this use of System.out by a logger.(ÃªˆÖ
-@	java:S106b"+Replace this use of System.out by a logger.(Ù£Ğ
-E	java:S106t"+Replace this use of System.out by a logger.(š‡Õ¶øÿÿÿÿ
-F	java:S106†"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ
-F	java:S106ˆ"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ
