@@ -2032,6 +2032,8 @@ public class SerializeAndReconstructTree {
 
 ### 4.4 折纸问题
 
+<img src="https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311262135462.png" alt="折纸问题" style="zoom:67%;" />
+
 #### 4.4.1 解决思路
 
 >请把一段纸条竖着放在桌子上，然后从纸条的下边向上方对折1次，压出折痕后展开。此时折痕是凹下去的，即折痕突起的方向指向纸条的背面。 如果从纸条的下边向上方连续对折2次，压出折痕后展开，此时有三条折痕，从上到下依次是下折痕、下折痕和上折痕。
@@ -2072,6 +2074,8 @@ public class PaperFold {
 
 
 ### 4.5 后继节点
+
+<img src="https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311262135317.png" alt="后继节点" style="zoom:67%;" />
 
 #### 4.5.1 解题思路
 
