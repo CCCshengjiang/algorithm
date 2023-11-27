@@ -2182,6 +2182,8 @@ public class SuccessorNode {
 
 #### 4.6.1 是否平衡二叉树
 
+![平衡二叉树](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311272337404.png)
+
 **题目**
 
 > 给定一颗二叉树的头节点head，返回这颗二叉树是不是平衡二叉树
