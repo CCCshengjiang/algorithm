@@ -379,6 +379,17 @@ public class RadixSort {
 
 ### 排序算法总结
 
+#### 算法的稳定性
+
+稳定性是指同样大小的样本在排序之后不会改变相对次序。
+
+- 对基础类型来说，稳定性毫无意义
+- 对非基础类型来说，稳定性有重要意义
+
+有些排序算法可以实现成稳定的，而有些排序算法无论如何都实现不了稳定性。
+
+![image-20231107133832725](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312051229386.png)
+
 #### 1 总结
 
 1. 不基于比较的排序（桶排序），对样本数据有严格的要求，不易改写
@@ -402,6 +413,8 @@ public class RadixSort {
 
 1. 稳定性的考虑：数据是值传递直接快排，引用传递用归并排序
 2. 充分利用`O(N*logN)`和`O(N^2)`排序各自的优势：小样本量直接插入排序
+
+
 
 
 
@@ -2324,7 +2337,7 @@ public class MaxDistance {
 
 下图中最大的二叉搜索树头节点：7，节点数量：2
 
-<img src="https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231751773.png"  />
+![搜索二叉树2](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311272353936.png)
 
 **分析**
 
@@ -2424,42 +2437,338 @@ public class MaxSubBSTNode {
 
 
 
+#### 4.6.4 派对的最大快乐值
+
+**题目**
+
+> 员工信息的定义如下：
+>
+> ​	公司的每个员工都符合 Employee 类的描述。整个公司的人员结构可以看作是一棵标准的、没有环的多叉树。树的头节点是公司唯一的老板。除老板之外的每个员工都有唯一的直接上级。叶节点是没有任何下属的基层员工(subordinates列表为空)，除基层员工外，每个员工都有一个或多个直接下级。
+
+```java
+class Employee{
+	public int happy; //这名员工可以带来的快乐值
+	List<Employee> subordinates; //这名员工有哪些直接下级
+}
+```
+
+> 派对的最大快乐值
+>
+> 这个公司现在要办party，你可以决定哪些员工来，哪些员工不来，规则:
+>
+> 1.如果某个员工来了，那么这个员工的所有直接下级都不能来
+>
+> 2.派对的整体快乐值是所有到场员工快乐值的累加
+>
+> 3.你的目标是让派对的整体快乐值尽量大给定一棵多叉树的头节点boss，请返回派对的最大快乐值
+
+**员工举例**
+
+<img src="https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312051132628.png" alt="image-20231205113214548" style="zoom:67%;" />
+
+**代码实现**
+
+```java
+public class MaxHappy {
+    public static class Employee{
+        public int happy;
+        List<Employee> next;
+        public Employee(int happy){
+            this.happy = happy;
+            next = new ArrayList<>();
+        }
+    }
+
+    public static class Info {
+        public int yes;
+        public int no;
+        public Info(int yes, int no) {
+            this.yes = yes;
+            this.no = no;
+        }
+    }
+    public static int getMaxHappy(Employee boss) {
+        if (boss == null) {
+            return 0;
+        }
+        Info allHappy = process(boss);
+        return Math.max(allHappy.yes, allHappy.no);
+    }
+
+    private static Info process(Employee node) {
+        // 基层员工的信息
+        if (node.next.isEmpty()) {
+            return new Info(node.happy, 0);
+        }
+        int yes = node.happy;
+        int no = 0;
+        for (Employee next : node.next) {
+            // 递归
+            Info nextInfo = process(next);
+            // 父节点去的话，子节点都不去 的最大快乐值
+            yes += nextInfo.no;
+            // 父节点不去，子节点在去或不去的快乐值中选最大的
+            no += Math.max(nextInfo.yes, nextInfo.no);
+        }
+        return new Info(yes, no);
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        Employee boss = new Employee(10);
+        Employee employee0 = new Employee(10);
+        Employee employee1 = new Employee(5);
+        Employee employee2 = new Employee(6);
+        Employee employee3 = new Employee(7);
+        Employee employee4 = new Employee(3);
+        Employee employee5 = new Employee(2);
+        Employee employee6 = new Employee(4);
+        Employee employee7 = new Employee(1);
+        Employee employee8 = new Employee(2);
+        Employee employee9 = new Employee(3);
+
+        boss.next.add(employee0);
+        employee0.next.add(employee1);
+        employee0.next.add(employee2);
+        employee0.next.add(employee3);
+        employee1.next.add(employee4);
+        employee2.next.add(employee5);
+        employee3.next.add(employee6);
+        employee4.next.add(employee7);
+        employee5.next.add(employee8);
+        employee6.next.add(employee9);
+
+        System.out.println(getMaxHappy(boss));
+    }
+}
+```
 
 
 
+## 5 打表技巧
+
+1. 某个面试题，输入参数类型简单，并且只有一个实际参数
+2. 要求的返回值类型也简单，并且只有一个
+3. 用暴力方法，把输入参数对应的返回值，打印出来看看
+4. 找出规律，进而优化code
 
 
 
+### 5.1 买苹果
+
+#### 5.1.1 题目描述
+
+小虎去买苹果，商店只提供两种类型的塑料袋，每种类型都有任意数量
+1)能装下6个苹果的袋子
+2)能装下8个苹果的袋子
+小虎可以自由使用两种袋子来装苹果，但是小虎有强迫症，他要求自己使用的袋子数量必须最少，且使用的每个袋子必须装满。给定一个正整数N，返回至少使用多少袋子。如果N无法让使用的每个袋子必须装满，返回-1
+
+#### 5.1.2 解决思路
+
+1. 这个问题，输入类型简单，就是需要买的苹果；返回类型也简单，就是使用袋子数量
+2. 先用暴力方法打表，看看有什么规律
+3. 再根据找出的规律优化code
+
+#### 5.1.3 代码实现
+
+暴力求解，打表
+
+```java
+public class AppleMinBags {
+    private static int minBags(int apple) {
+        if (apple <= 0) {
+            return 0;
+        }
+        int bag6 = -1;
+        int bag8 = apple / 8;
+        int rest = apple % 8;
+        while (rest % 6 != 0) {
+            bag8--;
+            rest += 8;
+            if (bag8 == -1) {
+                return -1;
+            }
+        }
+        bag6 = rest / 6;
+        return bag6 == -1 ? -1 : bag8 + bag6;
+
+    }
+
+    public static void main(String[] args) {
+        for (int apple = 1; apple <= 100; apple++) {
+            System.out.println(apple + ":" + minBags(apple));
+        }
+    }
+}
+```
+
+> 找到规律：
+>
+> 苹果数量是奇数，那么返回-1
+>
+> 如果苹果数小于17，那么在数量等于6或8时候要一个袋子，等于12，14，16的时候需要两个袋子
+>
+> 如果数量大于17，，每多八个苹果，袋子数量就会加一且都是隔一个才需要袋子
+
+优化后的code
+
+```java
+public class AppleMinBags {
+    public static int minBagsAwesome(int apple) {
+        if ((apple & 1) != 0) {
+            return -1;
+        }
+        if (apple < 17) {
+            return (apple == 6 || apple == 8) ? 1 :
+                    (apple == 12 || apple == 14 || apple == 16) ? 2 :
+                            -1;
+        }
+        return (apple - 18) / 8 + 3;
+    }
+
+    public static void main(String[] args) {
+        int N = 50;
+        System.out.println(minBagsAwesome(N));
+    }
+}
+```
 
 
 
+### 5.2 牛羊吃草
+
+#### 5.2.1 题目描述
+
+给定一个正整数N，表示有N份青草统一堆放在仓库里有一只牛和一只羊，牛先吃，羊后吃，它俩轮流吃草不管是牛还是羊，每一轮能吃的草量必须是1，4，16，64..(4的某次方)，谁最先把草吃完，谁获胜。假设牛和羊都绝顶聪明，都想赢，都会做出理性的决定。根据唯一的参数N，返回谁会赢
+
+#### 5.2.2 解决思路
+
+1. 输入简单：N份青草，返回值简单：谁赢
+2. 暴力方法打表，找规律
+3. 根据规律优化代码
+
+#### 5.2.3 代码实现
+
+暴力方法打表：
+
+```java
+public class EatGrass {
+    public static String winner(int num) {
+        if (num < 5) {
+            return (num == 0 || num == 2) ? "后手" : "先手";
+        }
+        // 假定先手要吃的数量
+        int base = 1;
+        while (base <= num) {
+            if (winner(num - base).equals("后手")) {
+                return "先手";
+            }
+            //防止溢出
+            if (base > num / 4) {
+                break;
+            }
+            base *= 4;
+        }
+        return "后手";
+    }
+
+    public static void main(String[] args) {
+        for (int num = 0; num <= 100; num++) {
+            System.out.println(num + ":" + winner(num));
+        }
+    }
+}
+```
+
+> 规律：
+>
+> 随着草的份数的增加，赢得规律是：后先后先先，每五个循环。
+
+优化code：
+
+```java
+public class EatGrass {
+    public static String winnerAwesome(int num) {
+        if (num % 5 == 0 || num % 5 == 2) {
+            return "后手";
+        }
+        return "先手";
+    }
+
+    public static void main(String[] args) {
+        int N = 50;
+        System.out.println(winnerAwesome(N));
+    }
+}
+```
 
 
 
+### 5.3 连续正数和
 
+#### 5.3.1 题目描述
 
+定义一种数:可以表示成若干 (数量>1) 连续正数和的数比如:
+5 =2+3，5就是这样的数
+12=3+4+5，12就是这样的数
+1不是这样的数，因为要求数量大于1个、连续正数和2=1+1，2也不是，因为等号右边不是连续正数。给定一个参数N，返回是不是可以表示成若干连续正数和的数
 
+#### 5.3.2 解决思路
 
+1. 输入简单：给定一个数，返回值简单：是或不是
+2. 暴力打表找规律
+3. 根据规律优化代码
 
+#### 5.3.3 代码实现
 
+暴力打表:
 
+```java
+public class MSumToN {
+    public static boolean isMSum(int num) {
+        for (int i = 1; i < num; i++) {
+            int sum = i;
+            for (int j = i + 1; j < num; j++) {
+                if (sum + j > num) {
+                    break;
+                }else if (sum + j == num) {
+                    return true;
+                }
+                sum += j;
+            }
+        }
+        return false;
+    }
 
+    public static void main(String[] args) {
+        for (int num = 0; num <= 100; num++) {
+            System.out.println(num + ":" + isMSum(num));
+        }
+    }
+}
+```
 
+> 规律：
+>
+> 出现false的数字：0，1，2，4，8，16......
 
-## 算法的稳定性
+优化code：
 
-稳定性是指同样大小的样本在排序之后不会改变相对次序。
+```java
+public class MSumToN {
+    public static boolean isMSumAwesome(int num) {
+        if (num < 3) {
+            return false;
+        }
+        return (num & (num - 1)) != 0;
+    }
 
-- 对基础类型来说，稳定性毫无意义
-- 对非基础类型来说，稳定性有重要意义
-
-有些排序算法可以实现成稳定的，而有些排序算法无论如何都实现不了稳定性。
-
-![image-20231107133832725](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202311231703463.png)
-
-
-
-
+    public static void main(String[] args) {
+        int N = 50;
+        System.out.println(isMSumAwesome(N));
+    }
+}
+```
 
 
 
