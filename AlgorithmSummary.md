@@ -2772,19 +2772,212 @@ public class MSumToN {
 
 
 
+## 6 矩阵处理
+
+找到coding上的宏观调度
+
+### 6.1 Zigzag矩阵打印
+
+#### 6.1.1 题目描述
+
+有一个n行m列的矩阵，要求按照Z字形打印出数据，如图：
+
+![zigzag](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312061119225.png)
+
+#### 6.1.2 解决思路
+
+1. 用一个指针，从a开始一直往右走，走到头再往下走
+2. 第二个指针，从a开始一直往下走，走到头再往右走
+3. 两个指针，每走一步，就打印他们之间直线上的点
+
+#### 6.1.3 代码实现
+
+```java
+public class ZigzagPrintMatrix {
+    public static void zigzagPrintMatrix(int[][] matrix) {
+        if (matrix == null) {
+            return;
+        }
+        // a指针
+        int aRow = 0;
+        int aColumn = 0;
+        // b指针
+        int bRow = 0;
+        int bColumn = 0;
+        // 向上打印还是向下打印
+        boolean flag = true;
+        // 矩阵边界
+        int maxRow = matrix.length - 1;
+        int maxColumn = matrix[0].length - 1;
+        while (aRow != maxRow + 1) {
+            printMatrix(matrix, aRow, aColumn, bRow, bColumn, flag);
+            aRow = aColumn == maxColumn ? aRow + 1 : aRow;
+            aColumn = aColumn == maxColumn ? aColumn : aColumn + 1;
+            bColumn = bRow == maxRow ? bColumn + 1 : bColumn;
+            bRow = bRow == maxRow ? bRow : bRow + 1;
+            // 每次打印完要改变方向
+            flag = !flag;
+        }
+    }
+
+    private static void printMatrix(int[][] matrix, int aRow, int aColumn, int bRow, int bColumn, boolean flag) {
+        if (flag) {
+            while (bRow != aRow - 1) {
+                System.out.print(matrix[bRow--][bColumn++] + " ");
+            }
+        }else {
+            while (aRow != bRow + 1) {
+                System.out.print(matrix[aRow++][aColumn--] + " ");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = new int[5][3];
+        int num = 1;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = num++;
+            }
+        }
+        zigzagPrintMatrix(matrix);
+    }
+}
+```
 
 
 
+## 6.2 转圈打印矩阵
+
+### 6.2.1 题目描述
+
+一个n行m列矩阵，需要从外围开始转圈打印，直到所有数据都被打印，如图：
+
+![spira](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312061213430.png)
+
+### 6.2.2 解决思路
+
+最外围的打印终点的下一个就是里一层的打印起点
+
+1. 用四个指针，两个行指针，两个列指针，指针全都在要打印的那一层
+2. 行指针中，一个只在要打印的第一行移动，一个只在要打印的最后一行移动
+3. 列指针中，一个只在要打印的第一列移动，一个只在要打印的最后一列移动
+
+### 6.2.3 代码实现
+
+```java
+public class PrintMatrixSpiralOrder {
+    public static void spiralOrderPrint(int[][] matrix) {
+        int firstRow = 0;
+        int firstColumn = 0;
+        int endRow = matrix.length - 1;
+        int endColumn = matrix[0].length - 1;
+        while (firstRow <= endRow && firstColumn <= endColumn) {
+            printEdge(matrix, firstRow++, firstColumn++, endRow--, endColumn--);
+        }
+
+    }
+
+    private static void printEdge(int[][] matrix, int firstRow, int firstColumn, int endRow, int endColumn) {
+        if (firstRow == endRow) { // 如果矩阵是个列矩阵
+            while (firstColumn <= endColumn) {
+                System.out.print(matrix[firstRow][firstColumn++] + " ");
+            }
+        } else if (firstColumn == endColumn) { // 如果矩阵是个行矩阵
+            while (firstRow <= endRow) {
+                System.out.print(matrix[firstRow++][firstColumn] + " ");
+            }
+        }else { // 正常打印
+            int row = firstRow;
+            int column = firstColumn;
+            while (firstColumn != endColumn) {
+                System.out.print(matrix[firstRow][firstColumn++] + " ");
+            }
+            while (firstRow != endRow) {
+                System.out.print(matrix[firstRow++][firstColumn] + " ");
+            }
+            while (firstColumn != column) {
+                System.out.print(matrix[firstRow][firstColumn--] + " ");
+            }
+            while (firstRow != row) {
+                System.out.print(matrix[firstRow--][firstColumn] + " ");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = new int[5][3];
+        int num = 1;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = num++;
+            }
+        }
+        spiralOrderPrint(matrix);
+    }
+}
+```
 
 
 
+## 6.3 旋转正方形矩阵
 
+### 6.3.1 题目描述
 
+有一个n*n的矩阵，现在把整个矩阵顺时针旋转90°，如图：
 
+![rotate](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312061347096.png)
 
+### 6.3.2 解决思路
 
+1. 设置四个指针，分别在矩阵的四个角
+2. 先旋转最外层，然后逐渐旋转里层
+3. 四个角是一组，每次顺时针移位
 
+### 6.3.3 代码实现
 
+```java
+public class RotateMatrix {
+    public static void rotateMatrix(int[][] matrix) {
+        if (matrix == null) {
+            return;
+        }
+        // 定义四个角
+        int startRow = 0;
+        int startColumn = 0;
+        int endRow = matrix.length - 1;
+        int endColumn = matrix[0].length - 1;
+        // 每次循环都会向里走步层
+        while (startRow <= endRow) {
+            rotateEdge(matrix, startRow++, startColumn++, endRow--, endColumn--);
+        }
+    }
+
+    private static void rotateEdge(int[][] matrix, int startRow, int startColumn, int endRow, int endColumn) {
+        int temp = 0;
+        // 顺时针交换四个数据
+        for (int i = 0; i < endRow - startRow; i++) {
+            temp = matrix[startRow][startColumn + i];
+            matrix[startRow][startColumn + i] = matrix[endRow - i][startColumn];
+            matrix[endRow - i][startColumn] = matrix[endRow][endColumn - i];
+            matrix[endRow][endColumn - i] = matrix[startRow + i][endColumn];
+            matrix[startRow + i][endColumn] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = new int[5][5];
+        int num = 1;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = num++;
+            }
+        }
+        rotateMatrix(matrix);
+    }
+}
+
+```
 
 
 

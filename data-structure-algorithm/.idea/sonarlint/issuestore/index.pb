@@ -13,3 +13,11 @@ W
 'src/com/cwblue/bruteforce/EatGrass.java,c\b\cbdeadaeae763ebe65e44d987b452eabaffee0f7
 V
 &src/com/cwblue/bruteforce/MSumToN.java,6\9\69481a024e0aa18cb3d3914425934e211ca270f2
+\
+,src/com/cwblue/matrix/ZigZagPrintMatrix.java,5\0\50c211b44e50a6db70630345546ae28b33eed9ff
+\
+,src/com/cwblue/matrix/ZigzagPrintMatrix.java,f\2\f2fa762ea0634f00ec9692c97eb35d73de150c1c
+a
+1src/com/cwblue/matrix/PrintMatrixSpiralOrder.java,8\6\863aa8a6b8c7d08eec22cc8b2c46fac296e27c9e
+W
+'src/com/cwblue/matrix/RotateMatrix.java,5\6\5609dc2bf20d8587646f056d39166d47c1c2bafe
