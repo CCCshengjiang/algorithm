@@ -2847,15 +2847,15 @@ public class ZigzagPrintMatrix {
 
 
 
-## 6.2 转圈打印矩阵
+### 6.2 转圈打印矩阵
 
-### 6.2.1 题目描述
+#### 6.2.1 题目描述
 
 一个n行m列矩阵，需要从外围开始转圈打印，直到所有数据都被打印，如图：
 
 ![spira](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312061213430.png)
 
-### 6.2.2 解决思路
+#### 6.2.2 解决思路
 
 最外围的打印终点的下一个就是里一层的打印起点
 
@@ -2863,7 +2863,7 @@ public class ZigzagPrintMatrix {
 2. 行指针中，一个只在要打印的第一行移动，一个只在要打印的最后一行移动
 3. 列指针中，一个只在要打印的第一列移动，一个只在要打印的最后一列移动
 
-### 6.2.3 代码实现
+#### 6.2.3 代码实现
 
 ```java
 public class PrintMatrixSpiralOrder {
@@ -2920,21 +2920,21 @@ public class PrintMatrixSpiralOrder {
 
 
 
-## 6.3 旋转正方形矩阵
+### 6.3 旋转正方形矩阵
 
-### 6.3.1 题目描述
+#### 6.3.1 题目描述
 
 有一个n*n的矩阵，现在把整个矩阵顺时针旋转90°，如图：
 
 ![rotate](https://gitee.com/CCCshengjiang/blog-img/raw/master/image/202312061347096.png)
 
-### 6.3.2 解决思路
+#### 6.3.2 解决思路
 
 1. 设置四个指针，分别在矩阵的四个角
 2. 先旋转最外层，然后逐渐旋转里层
 3. 四个角是一组，每次顺时针移位
 
-### 6.3.3 代码实现
+#### 6.3.3 代码实现
 
 ```java
 public class RotateMatrix {
