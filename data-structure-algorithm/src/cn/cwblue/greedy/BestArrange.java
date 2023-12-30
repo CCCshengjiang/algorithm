@@ -66,6 +66,9 @@ public class BestArrange {
      * @return 然会能安排的最多的会议数量
      */
     public static int bestArrange2(Programs[] programs) {
+        if (programs == null || programs.length == 0) {
+            return 0;
+        }
         Arrays.sort(programs, Comparator.comparingInt(o -> o.end));
         int timeLine = 0;
         int res = 0;
