@@ -20,7 +20,7 @@ Z
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 S
 #src/cn/cwblue/greedy/PutLights.java,c\6\c679b791c7d341845e2369a821136b575fb809f5
-H
-src/cn/cwblue/graph.java,d\4\d4e2d64f2a70fcb14c8848ab0ca7820f206c1ad1
 W
 'src/cn/cwblue/graph/GraphGenerator.java,d\8\d8a055464e85f739a123391b9e73ce0038729c82
+L
+src/cn/cwblue/graph/BFS.java,c\5\c5ee3468675e7770d39012443661739d6b1db7e5

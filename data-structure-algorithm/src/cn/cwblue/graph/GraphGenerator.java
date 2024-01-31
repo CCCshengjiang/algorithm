@@ -1,9 +1,6 @@
 package cn.cwblue.graph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * 图
@@ -33,7 +30,7 @@ public class GraphGenerator {
             fromNode.edges.add(newEdge);
             fromNode.outNum++;
             toNode.inNum++;
-            fromNode.nodes.add(toNode);
+            fromNode.nexts.add(toNode);
             graph.edges.add(newEdge);
         }
         return graph;
@@ -41,7 +38,7 @@ public class GraphGenerator {
     }
 
     // 边的定义
-    private static class Edge {
+    public static class Edge {
         public Node from;
         public Node to;
         public int weight; // 权重
@@ -51,29 +48,63 @@ public class GraphGenerator {
             this.to = to;
             this.weight = weight;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Edge edge = (Edge) o;
+            return weight == edge.weight && Objects.equals(from, edge.from) && Objects.equals(to, edge.to);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(from, to, weight);
+        }
     }
 
     // 点的定义
-    private static class Node {
+    public static class Node {
         public int value;
         public int inNum; // 入度
         public int outNum; // 出度
-        public List<Node> nodes; // 出度点
+        public List<Node> nexts; // 出度点
         public List<Edge> edges; // 出度边
 
         public Node(int value) {
             this.value = value;
             this.inNum = 0;
             this.outNum = 0;
-            this.nodes = new ArrayList<>();
+            this.nexts = new ArrayList<>();
             this.edges = new ArrayList<>();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Node node = (Node) o;
+            return value == node.value && inNum == node.inNum && outNum == node.outNum && Objects.equals(nexts, node.nexts) && Objects.equals(edges, node.edges);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value, inNum, outNum, nexts, edges);
         }
     }
 
     // 图的定义
-    private static class Graph {
-        public HashMap<Integer, Node> nodes; // 每个编号对应的节点
-        public HashSet<Edge> edges; // 边
+    public static class Graph {
+        public Map<Integer, Node> nodes; // 每个编号对应的节点
+        public Set<Edge> edges; // 边
 
         public Graph() {
             this.nodes = new HashMap<>();
